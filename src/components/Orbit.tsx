@@ -55,9 +55,10 @@ export default function Orbit({ lang, onPick }: Props) {
       cv.width = w * dpr; cv.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const narrow = w < 820;
-      cx = narrow ? w * 0.58 : w * 0.74;
-      cy = narrow ? h * 0.2 : h * 0.52;
-      R = narrow ? Math.min(w * 0.55, h * 0.22) : Math.min(w * 0.26, h * 0.42);
+      // phones: the system sits in its own band above the copy (see .hero padding-top)
+      R = narrow ? Math.min(w * 0.42, 160) : Math.min(w * 0.26, h * 0.42);
+      cx = narrow ? w * 0.5 : w * 0.74;
+      cy = narrow ? 200 : h * 0.52;
     }
 
     function project(ring: (typeof rings)[number], angle: number) {

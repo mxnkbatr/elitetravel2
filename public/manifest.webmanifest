@@ -1,0 +1,22 @@
+{
+  "name": "Munkhbaatar Dorjsuren — Portfolio",
+  "short_name": "Munkhbaatar",
+  "description": "Full-stack web & mobile developer from Ulaanbaatar. Shipped work, toolkit and contact.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#05071a",
+  "theme_color": "#05071a",
+  "categories": ["portfolio", "business", "developer"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Shipped work", "url": "/#work", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Contact", "url": "/#contact", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

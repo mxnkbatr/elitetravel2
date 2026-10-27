@@ -9,6 +9,8 @@ Bilingual (EN / MN) portfolio built with **Vite + React + TypeScript**, animated
 - Key results counted up (`CountUp`) and a velocity-reactive tech marquee (`ScrollVelocity`)
 - Projects in a pinned horizontal track on desktop (GSAP ScrollTrigger), `SpotlightCard` panels
 - Magnetic buttons (`Magnet`), click sparks (`ClickSpark`), shiny status text (`ShinyText`), split headings (`SplitText`)
+- Installable app (PWA): manifest, icons, offline service worker (`public/sw.js`), an “Install app” button (native prompt on Android, Add to Home Screen steps on iOS)
+- Phone layout works like an app: bottom tab bar, swipeable project carousel, safe-area insets
 - Respects `prefers-reduced-motion`
 
 React Bits sources live in `src/components/reactbits/` (copied from the TS + CSS variants).

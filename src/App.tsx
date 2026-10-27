@@ -13,6 +13,7 @@ import ShinyText from './components/reactbits/ShinyText';
 import SplitText from './components/reactbits/SplitText';
 import SpotlightCard from './components/reactbits/SpotlightCard';
 import Orbit from './components/Orbit';
+import { InstallButton, TabBar } from './components/AppChrome';
 import { scrollTo, startSmoothScroll } from './smooth';
 import { CORE, EMAIL, LANGS, MARQUEE, PROJECTS, STACK, STATS, TIMELINE, UI, type Lang, type Project } from './data';
 
@@ -39,6 +40,8 @@ export default function App() {
   const [toast, setToast] = useState('');
   const t = UI[lang];
   const root = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [slide, setSlide] = useState(0);
   const workTrigger = useRef<ScrollTrigger | null>(null);
   const touch = typeof matchMedia !== 'undefined' && matchMedia('(hover: none)').matches;
 
@@ -70,7 +73,10 @@ export default function App() {
       const progress = Math.min(1, Math.max(0, (card.offsetLeft - window.innerWidth * 0.25) / max));
       scrollTo(st.start + progress * (st.end - st.start));
     } else {
-      scrollTo(card, -window.innerHeight / 3);
+      // phones: bring the carousel into view, then swipe it to the card
+      scrollTo(document.getElementById('work')!, -24);
+      const track = trackRef.current!;
+      track.scrollTo({ left: card.offsetLeft - track.offsetLeft - (track.clientWidth - card.offsetWidth) / 2, behavior: 'smooth' });
     }
     card.classList.add('flash');
     setTimeout(() => card.classList.remove('flash'), 2200);
@@ -171,6 +177,20 @@ export default function App() {
     { scope: root, dependencies: [lang], revertOnUpdate: true },
   );
 
+  // carousel position for the dots on phones
+  const onSwipe = () => {
+    const track = trackRef.current;
+    if (!track || track.scrollWidth <= track.clientWidth) return;
+    const cards = Array.from(track.children) as HTMLElement[];
+    const center = track.scrollLeft + track.clientWidth / 2;
+    let best = 0;
+    cards.forEach((c, i) => {
+      if (Math.abs(c.offsetLeft - track.offsetLeft + c.offsetWidth / 2 - center) <
+          Math.abs(cards[best].offsetLeft - track.offsetLeft + cards[best].offsetWidth / 2 - center)) best = i;
+    });
+    if (best !== slide) setSlide(best);
+  };
+
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL);
@@ -198,6 +218,7 @@ export default function App() {
             <a href="#contact" onClick={go}>{t.nav.contact}</a>
           </nav>
           <div className="nav-right">
+            <InstallButton lang={lang} />
             <div className="lang" role="group" aria-label="Language">
               {(['en', 'mn'] as Lang[]).map(l => (
                 <button key={l} type="button" aria-pressed={lang === l} onClick={() => setLang(l)}>{l.toUpperCase()}</button>
@@ -211,7 +232,7 @@ export default function App() {
 
         <main id="top">
           {/* HERO */}
-          <section className="hero">
+          <section className="hero" id="home">
             <Orbit lang={lang} onPick={pick} />
             <div className="hero-copy">
               <p className="status hero-reveal">
@@ -272,10 +293,14 @@ export default function App() {
               <SplitText key={`w-${lang}`} text={t.workTitle} tag="h2" textAlign="left" splitType="chars" delay={25} effect="rise" mask />
               <p>{t.workSub}</p>
             </div>
-            <div className="track">
+            <div className="track" ref={trackRef} onScroll={onSwipe}>
               {PROJECTS.map(p => <Card key={p.id} p={p} lang={lang} />)}
             </div>
             <div className="work-bar" aria-hidden="true"><span /></div>
+            <div className="dots" aria-hidden="true">
+              {PROJECTS.map((p, i) => <span key={p.id} className={i === slide ? 'on' : ''} />)}
+              <em>{t.swipe}</em>
+            </div>
           </section>
 
           {/* STACK */}
@@ -356,6 +381,7 @@ export default function App() {
           <span>{t.footer}</span>
         </footer>
 
+        <TabBar lang={lang} />
         <div className={`toast${toast ? ' show' : ''}`} role="status" aria-live="polite">{toast}</div>
       </div>
     </ClickSpark>
