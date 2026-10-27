@@ -1,24 +1,31 @@
 # Munkhbaatar Dorjsuren — portfolio
 
-Static, bilingual (EN / MN) portfolio site. No build step.
+Bilingual (EN / MN) portfolio built with **Vite + React + TypeScript**, animated with **GSAP** (ScrollTrigger, SplitText), **Lenis** smooth scrolling and components from **[React Bits](https://reactbits.dev)**.
 
-- `index.html` — page structure
-- `styles.css` — styles
-- `main.js` — all content (projects, stats, stack, timeline, EN/MN text), the orbit canvas and interactions
-- `assets/` — CV PDFs and favicon
+## What's inside
 
-## Run locally
+- Hero: canvas orbit of every shipped product (`src/components/Orbit.tsx`), name decoded with React Bits `DecryptedText`, GSAP intro and scroll-linked exit
+- Profile paragraph revealed word by word on scroll (`ScrollReveal`)
+- Key results counted up (`CountUp`) and a velocity-reactive tech marquee (`ScrollVelocity`)
+- Projects in a pinned horizontal track on desktop (GSAP ScrollTrigger), `SpotlightCard` panels
+- Magnetic buttons (`Magnet`), click sparks (`ClickSpark`), shiny status text (`ShinyText`), split headings (`SplitText`)
+- Respects `prefers-reduced-motion`
+
+React Bits sources live in `src/components/reactbits/` (copied from the TS + CSS variants).
+
+## Develop
 
 ```sh
-npx serve .
-# or: python3 -m http.server
+npm install
+npm run dev
+npm run build   # typecheck + production build into dist/
 ```
 
 ## Edit content
 
-Everything you'd want to change lives at the top of `main.js`: `T` (UI text), `STATS`, `PROJECTS`, `STACK`, `TIMELINE`, `LANGS`.
+All text, projects, stats, stack and timeline (in both languages) are in `src/data.ts`.
 Add `?lang=mn` to the URL to open the site in Mongolian.
 
 ## Deploy
 
-Import the repo in Vercel (framework preset: "Other") or enable GitHub Pages on the branch root. No configuration needed.
+Vercel: import the repo, framework preset **Vite** (build `npm run build`, output `dist`).

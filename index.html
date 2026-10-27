@@ -8,122 +8,13 @@
   <meta property="og:title" content="Munkhbaatar Dorjsuren — Full-Stack Web & Mobile Developer">
   <meta property="og:description" content="Web platforms, iOS/Android apps and ERP systems, built end to end.">
   <meta name="theme-color" content="#05071a">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;900&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip" href="#work" data-i18n="skip">Skip to work</a>
-
-  <header class="nav" id="nav">
-    <a class="brand" href="#top" aria-label="Home">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="5"/><ellipse cx="20" cy="20" rx="17" ry="7" transform="rotate(-24 20 20)"/></svg>
-      <span>MD</span>
-    </a>
-    <nav class="links" aria-label="Sections">
-      <a href="#work" data-i18n="nav.work">Work</a>
-      <a href="#stack" data-i18n="nav.stack">Stack</a>
-      <a href="#path" data-i18n="nav.path">Path</a>
-      <a href="#contact" data-i18n="nav.contact">Contact</a>
-    </nav>
-    <div class="nav-right">
-      <div class="lang" role="group" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang="mn" aria-pressed="false">MN</button>
-      </div>
-      <a class="btn btn-small" href="#contact" data-i18n="nav.hire">Start a project</a>
-    </div>
-  </header>
-
-  <main id="top">
-    <!-- HERO -->
-    <section class="hero">
-      <canvas id="orbit" aria-hidden="true"></canvas>
-      <div class="hero-copy">
-        <p class="status"><span class="pulse"></span><span data-i18n="hero.status">Taking new projects · Ulaanbaatar</span></p>
-        <h1 class="name">
-          <span class="line" id="name1">Munkhbaatar</span>
-          <span class="line line-2" id="name2">Dorjsuren</span>
-        </h1>
-        <p class="role" data-i18n="hero.role">Full-stack web &amp; mobile developer</p>
-        <p class="lede" data-i18n="hero.lede">I take products from the first idea to the App Store, Google Play and the client's hands. Payments, video calls, SMS login and AI assistants included.</p>
-        <div class="cta">
-          <a class="btn" href="#work" data-i18n="hero.cta1">See shipped work</a>
-          <a class="btn btn-ghost" id="cvLink" href="assets/cv-en.pdf" download data-i18n="hero.cta2">Download CV</a>
-        </div>
-      </div>
-      <p class="orbit-hint" data-i18n="hero.hint">Every dot in orbit is a product I shipped. Hover one.</p>
-      <div class="orbit-tip" id="orbitTip" hidden></div>
-    </section>
-
-    <!-- TELEMETRY -->
-    <section class="telemetry" aria-labelledby="t-title">
-      <h2 id="t-title" class="sr" data-i18n="results.title">Key results</h2>
-      <ul class="stats" id="stats"></ul>
-    </section>
-
-    <!-- WORK -->
-    <section class="section" id="work">
-      <div class="section-head">
-        <h2 data-i18n="work.title">Shipped work</h2>
-        <p data-i18n="work.sub">Built for clients, used by real people. Most of it alone, end to end.</p>
-      </div>
-      <div class="filters" role="group" aria-label="Filter projects" id="filters"></div>
-      <div class="projects" id="projects"></div>
-    </section>
-
-    <!-- STACK -->
-    <section class="section" id="stack">
-      <div class="section-head">
-        <h2 data-i18n="stack.title">The toolkit</h2>
-        <p data-i18n="stack.sub">Main stack first. Everything else is what the product needed.</p>
-      </div>
-      <div class="core" id="core"></div>
-      <div class="stack" id="stackGrid"></div>
-    </section>
-
-    <!-- PATH -->
-    <section class="section" id="path">
-      <div class="section-head">
-        <h2 data-i18n="path.title">The path so far</h2>
-      </div>
-      <ol class="timeline" id="timeline"></ol>
-      <div class="facts">
-        <div class="fact">
-          <h3 data-i18n="edu.title">Education</h3>
-          <p>British School of Ulaanbaatar</p>
-        </div>
-        <div class="fact">
-          <h3 data-i18n="lang.title">Languages</h3>
-          <ul class="langs" id="langs"></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="contact" id="contact">
-      <h2 data-i18n="contact.title">Have a product in mind? Let's build it.</h2>
-      <p data-i18n="contact.sub">Web, iOS, Android or Odoo ERP. Tell me what you need and I'll reply within a day.</p>
-      <div class="contact-main">
-        <a class="mail" href="mailto:bmunh95@gmail.com">bmunh95@gmail.com</a>
-        <button class="btn btn-ghost btn-small" type="button" id="copyMail" data-i18n="contact.copy">Copy email</button>
-      </div>
-      <ul class="channels">
-        <li><a href="tel:+97699918122"><span data-i18n="contact.phone">Phone</span><b>+976 9991 8122</b></a></li>
-        <li><a href="https://github.com/mxnkbatr" target="_blank" rel="noopener"><span>GitHub</span><b>mxnkbatr</b></a></li>
-        <li><a href="https://www.linkedin.com/in/munkhbaatar-dorjsuren-030a81446" target="_blank" rel="noopener"><span>LinkedIn</span><b>Munkhbaatar Dorjsuren</b></a></li>
-      </ul>
-    </section>
-  </main>
-
-  <footer class="foot">
-    <span>© <span id="year"></span> Munkhbaatar Dorjsuren</span>
-    <span data-i18n="footer">Made in Ulaanbaatar</span>
-  </footer>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="main.js"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
