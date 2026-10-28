@@ -15,7 +15,7 @@ import SpotlightCard from './components/reactbits/SpotlightCard';
 import Orbit from './components/Orbit';
 import { InstallButton, TabBar } from './components/AppChrome';
 import { scrollTo, startSmoothScroll } from './smooth';
-import { CORE, EMAIL, LANGS, MARQUEE, PROJECTS, STACK, STATS, STORE_ACCOUNTS, STORE_APPS, TIMELINE, UI, type Lang, type Project } from './data';
+import { CORE, EMAIL, LANGS, MARQUEE, PROJECTS, STACK, STATS, STORE_APPS, TIMELINE, UI, type Lang, type Project } from './data';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -338,9 +338,6 @@ export default function App() {
                         ))}
                       </ul>
                     )}
-                    <a className="store-all" href={STORE_ACCOUNTS[store]} target="_blank" rel="noopener">
-                      {store === 'ios' ? t.storeIos : t.storeAndroid}
-                    </a>
                   </SpotlightCard>
                 );
               })}

@@ -28,8 +28,6 @@ export const UI = {
     workSub: 'Built for clients, used by real people. Most of it alone, end to end.',
     storeTitle: 'Live in the stores',
     storeSub: 'Apps I built and published, downloadable right now.',
-    storeIos: 'See all on the App Store',
-    storeAndroid: 'See all on Google Play',
     storeGet: 'Open',
     apps: 'apps',
     stackTitle: 'The toolkit',
@@ -75,8 +73,6 @@ export const UI = {
     workSub: 'Захиалагчдад зориулж хийсэн, бодит хэрэглэгчтэй. Ихэнхийг нь ганцаараа, эхнээс нь дуустал.',
     storeTitle: 'Store-д гарсан аппууд',
     storeSub: 'Миний хийж нийтлүүлсэн, яг одоо татаж болох аппууд.',
-    storeIos: 'App Store дээр бүгдийг үзэх',
-    storeAndroid: 'Google Play дээр бүгдийг үзэх',
     storeGet: 'Нээх',
     apps: 'апп',
     stackTitle: 'Ур чадвар',
@@ -254,11 +250,6 @@ export const LANGS: Record<Lang, [string, string]>[] = [
 
 export const EMAIL = 'bmunh95@gmail.com';
 
-export const STORE_ACCOUNTS = {
-  ios: 'https://apps.apple.com/us/developer/bayanmunkh-gungaajav/id1629575117',
-  android: 'https://play.google.com/store/apps/developer?id=Developer+Kegel',
-};
-
 export interface StoreApp {
   name: string;
   store: 'ios' | 'android';
@@ -268,7 +259,7 @@ export interface StoreApp {
   category?: L;
 }
 
-/** Apps published from the developer accounts above. */
+/** Apps published to the App Store and Google Play. */
 export const STORE_APPS: StoreApp[] = [
   { name: 'local express', store: 'ios', url: 'https://apps.apple.com/us/app/local-express/id6744665201' },
   { name: 'suniagch', store: 'ios', url: 'https://apps.apple.com/us/app/suniagch/id6773546257' },
