@@ -30,3 +30,9 @@ export function scrollTo(target: HTMLElement | number, offset = 0) {
   const y = typeof target === 'number' ? target : target.getBoundingClientRect().top + window.scrollY + offset;
   window.scrollTo({ top: y });
 }
+
+/** Freeze page scrolling while an overlay (intro, command palette) is open. */
+export function lockScroll(locked: boolean) {
+  if (locked) lenis?.stop(); else lenis?.start();
+  document.documentElement.style.overflow = locked ? 'hidden' : '';
+}

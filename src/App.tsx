@@ -14,6 +14,8 @@ import SplitText from './components/reactbits/SplitText';
 import SpotlightCard from './components/reactbits/SpotlightCard';
 import Orbit from './components/Orbit';
 import { InstallButton, TabBar } from './components/AppChrome';
+import Boot from './components/Boot';
+import CommandPalette from './components/CommandPalette';
 import { scrollTo, startSmoothScroll } from './smooth';
 import { CORE, EMAIL, LANGS, MARQUEE, PROJECTS, STACK, STATS, STORE_APPS, TIMELINE, UI, type Lang, type Project } from './data';
 
@@ -35,9 +37,29 @@ function initialLang(): Lang {
   return navigator.language.toLowerCase().startsWith('mn') ? 'mn' : 'en';
 }
 
+// the intro plays once per browser session, never for reduced motion
+function introSeen() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
+  try { return sessionStorage.getItem('booted') === '1'; } catch { return false; }
+}
+
+/** Current time in Ulaanbaatar, refreshed every 20s. */
+function useUBTime() {
+  const fmt = () => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Ulaanbaatar' }).format(new Date());
+  const [time, setTime] = useState(fmt);
+  useEffect(() => {
+    const id = setInterval(() => setTime(fmt()), 20000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
+
 export default function App() {
   const [lang, setLang] = useState<Lang>(initialLang);
   const [toast, setToast] = useState('');
+  const [booted, setBooted] = useState(introSeen);
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const ubTime = useUBTime();
   const t = UI[lang];
   const root = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -61,6 +83,16 @@ export default function App() {
     e.preventDefault();
     scrollTo(el, id === 'top' ? 0 : -40);
   };
+
+  const goTo = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    if (el) scrollTo(id === 'home' ? 0 : el, id === 'home' ? 0 : -40);
+  }, []);
+
+  const finishBoot = useCallback(() => {
+    try { sessionStorage.setItem('booted', '1'); } catch { /* storage unavailable */ }
+    setBooted(true);
+  }, []);
 
   // Orbit click: jump to that product's card, accounting for the horizontal pin.
   const pick = useCallback((id: string) => {
@@ -90,11 +122,12 @@ export default function App() {
         { motion: '(prefers-reduced-motion: no-preference)', wide: '(min-width: 1024px)' },
         ctx => {
           const { motion, wide } = ctx.conditions as { motion: boolean; wide: boolean };
-          if (!motion) return;
+          if (!motion || !booted) return;
 
           // hero intro, then scroll-linked exit
-          gsap.from('.hero-reveal', { y: 30, opacity: 0, duration: 1, stagger: 0.12, ease: 'expo.out', delay: 0.5 });
-          gsap.from('.nav', { y: -40, opacity: 0, duration: 1, ease: 'expo.out', delay: 0.2 });
+          gsap.from('.hero-reveal', { y: 30, opacity: 0, duration: 1, stagger: 0.12, ease: 'expo.out', delay: 0.35 });
+          gsap.from('.nav', { y: -40, opacity: 0, duration: 1, ease: 'expo.out', delay: 0.1 });
+          gsap.from('.orbit', { scale: 0.6, opacity: 0, duration: 1.8, ease: 'expo.out' });
           gsap.to('.hero-copy', {
             yPercent: -30, opacity: 0, ease: 'none',
             scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
@@ -174,7 +207,7 @@ export default function App() {
 
       return () => mm.revert();
     },
-    { scope: root, dependencies: [lang], revertOnUpdate: true },
+    { scope: root, dependencies: [lang, booted], revertOnUpdate: true },
   );
 
   // carousel position for the dots on phones
@@ -218,6 +251,10 @@ export default function App() {
             <a href="#contact" onClick={go}>{t.nav.contact}</a>
           </nav>
           <div className="nav-right">
+            <button type="button" className="cmdk-trigger" onClick={() => setCmdOpen(true)} aria-label="Command palette">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+              <kbd>⌘K</kbd>
+            </button>
             <InstallButton lang={lang} />
             <div className="lang" role="group" aria-label="Language">
               {(['en', 'mn'] as Lang[]).map(l => (
@@ -237,13 +274,20 @@ export default function App() {
             <div className="hero-copy">
               <p className="status hero-reveal">
                 <span className="pulse" />
-                <ShinyText text={t.status} color="#8f98c2" shineColor="#ffffff" speed={3} />
+                <ShinyText text={`${t.status} ${ubTime}`} color="#8f98c2" shineColor="#ffffff" speed={3} />
               </p>
               <h1 className="name" aria-label={t.name.join(' ')}>
-                <DecryptedText key={`a-${lang}`} text={t.name[0]} animateOn="view" sequential revealDirection="start" speed={45}
-                  characters={GLYPHS} parentClassName="line" encryptedClassName="glyph" aria-hidden="true" />
-                <DecryptedText key={`b-${lang}`} text={t.name[1]} animateOn="view" sequential revealDirection="start" speed={55}
-                  characters={GLYPHS} parentClassName="line line-2" encryptedClassName="glyph" aria-hidden="true" />
+                {booted ? (
+                  <>
+                    <DecryptedText key={`a-${lang}`} text={t.name[0]} animateOn="view" sequential revealDirection="start" speed={45}
+                      characters={GLYPHS} parentClassName="line" encryptedClassName="glyph" aria-hidden="true" />
+                    <DecryptedText key={`b-${lang}`} text={t.name[1]} animateOn="view" sequential revealDirection="start" speed={55}
+                      characters={GLYPHS} parentClassName="line line-2" encryptedClassName="glyph" aria-hidden="true" />
+                  </>
+                ) : (
+                  // hold the layout while the intro covers the page
+                  <span className="name-hold" aria-hidden="true"><span className="line">{t.name[0]}</span><span className="line line-2">{t.name[1]}</span></span>
+                )}
               </h1>
               <p className="role hero-reveal">{t.role}</p>
               <p className="lede hero-reveal">{t.lede}</p>
@@ -423,6 +467,8 @@ export default function App() {
         </footer>
 
         <TabBar lang={lang} />
+        <CommandPalette lang={lang} open={cmdOpen} onOpenChange={setCmdOpen} goTo={goTo} pickProject={pick} setLang={setLang} copyEmail={copy} />
+        {!booted && <Boot lang={lang} onDone={finishBoot} />}
         <div className={`toast${toast ? ' show' : ''}`} role="status" aria-live="polite">{toast}</div>
       </div>
     </ClickSpark>

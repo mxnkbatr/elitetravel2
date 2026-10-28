@@ -107,7 +107,7 @@ export function InstallButton({ lang }: { lang: Lang }) {
 
   return (
     <>
-      <button type="button" className="install" onClick={install}>
+      <button type="button" className="install" onClick={install} aria-label={t.install}>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" /></svg>
         <span>{t.install}</span>
       </button>
