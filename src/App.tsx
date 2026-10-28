@@ -15,7 +15,7 @@ import SpotlightCard from './components/reactbits/SpotlightCard';
 import Orbit from './components/Orbit';
 import { InstallButton, TabBar } from './components/AppChrome';
 import { scrollTo, startSmoothScroll } from './smooth';
-import { CORE, EMAIL, LANGS, MARQUEE, PROJECTS, STACK, STATS, TIMELINE, UI, type Lang, type Project } from './data';
+import { CORE, EMAIL, LANGS, MARQUEE, PROJECTS, STACK, STATS, STORE_ACCOUNTS, STORE_APPS, TIMELINE, UI, type Lang, type Project } from './data';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -300,6 +300,48 @@ export default function App() {
             <div className="dots" aria-hidden="true">
               {PROJECTS.map((p, i) => <span key={p.id} className={i === slide ? 'on' : ''} />)}
               <em>{t.swipe}</em>
+            </div>
+          </section>
+
+          {/* STORES */}
+          <section className="section" id="stores">
+            <div className="section-head">
+              <SplitText key={`st-${lang}`} text={t.storeTitle} tag="h2" textAlign="left" splitType="chars" delay={25} effect="rise" mask />
+              <p>{t.storeSub}</p>
+            </div>
+            <div className="stores">
+              {(['ios', 'android'] as const).map(store => {
+                const apps = STORE_APPS.filter(a => a.store === store);
+                return (
+                  <SpotlightCard key={store} className={`store ${store}`} style={CARD_SURFACE}
+                    spotlightColor={store === 'ios' ? '#8ff3ff' : '#ffb547'} ambient={false}>
+                    <div className="store-head">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        {store === 'ios'
+                          ? <path d="M16.4 12.6c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9s-2-.9-3.3-.9c-1.7 0-3.3 1-4.1 2.5-1.8 3.1-.5 7.6 1.3 10.1.8 1.2 1.8 2.6 3.1 2.5 1.3 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.4 0 2.2-1.2 3-2.5.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.4-.9-2.4-4zM14 5.1c.7-.8 1.1-1.9 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z" />
+                          : <path d="M3.6 2.3 13.4 12l-9.8 9.7c-.4-.2-.6-.6-.6-1.1V3.4c0-.5.2-.9.6-1.1zm11 8.5 2.6-2.6 3.3 1.9c.9.5.9 1.8 0 2.3l-3.3 1.9-2.6-2.6L13.4 12zM5 1.6l10.4 6-2.1 2.1zm8.3 12.7 2.1 2.1L5 22.4z" />}
+                      </svg>
+                      <h3>{store === 'ios' ? 'App Store' : 'Google Play'}</h3>
+                    </div>
+                    {apps.length > 0 && (
+                      <ul className="store-apps">
+                        {apps.map(a => (
+                          <li key={a.url}>
+                            <a href={a.url} target="_blank" rel="noopener">
+                              {a.icon ? <img src={a.icon} alt="" width="56" height="56" loading="lazy" /> : <span className="app-ph">{a.name[0]}</span>}
+                              <span><b>{a.name}</b>{a.category && <em>{a.category[lang]}</em>}</span>
+                              <i>{t.storeGet}</i>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <a className="store-all" href={STORE_ACCOUNTS[store]} target="_blank" rel="noopener">
+                      {store === 'ios' ? t.storeIos : t.storeAndroid}
+                    </a>
+                  </SpotlightCard>
+                );
+              })}
             </div>
           </section>
 

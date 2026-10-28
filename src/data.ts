@@ -26,6 +26,11 @@ export const UI = {
     results: 'Key results',
     workTitle: 'Shipped work',
     workSub: 'Built for clients, used by real people. Most of it alone, end to end.',
+    storeTitle: 'Live in the stores',
+    storeSub: 'Apps I built and published, downloadable right now.',
+    storeIos: 'See all on the App Store',
+    storeAndroid: 'See all on Google Play',
+    storeGet: 'Open',
     stackTitle: 'The toolkit',
     stackSub: 'Main stack first. Everything else is what the product needed.',
     pathTitle: 'The path so far',
@@ -67,6 +72,11 @@ export const UI = {
     results: 'Гол үр дүн',
     workTitle: 'Хүлээлгэн өгсөн ажлууд',
     workSub: 'Захиалагчдад зориулж хийсэн, бодит хэрэглэгчтэй. Ихэнхийг нь ганцаараа, эхнээс нь дуустал.',
+    storeTitle: 'Store-д гарсан аппууд',
+    storeSub: 'Миний хийж нийтлүүлсэн, яг одоо татаж болох аппууд.',
+    storeIos: 'App Store дээр бүгдийг үзэх',
+    storeAndroid: 'Google Play дээр бүгдийг үзэх',
+    storeGet: 'Нээх',
     stackTitle: 'Ур чадвар',
     stackSub: 'Эхэнд нь үндсэн stack. Бусад нь бүтээгдэхүүн шаардсан технологиуд.',
     pathTitle: 'Туулсан зам',
@@ -241,3 +251,20 @@ export const LANGS: Record<Lang, [string, string]>[] = [
 ];
 
 export const EMAIL = 'bmunh95@gmail.com';
+
+export const STORE_ACCOUNTS = {
+  ios: 'https://apps.apple.com/us/developer/bayanmunkh-gungaajav/id1629575117',
+  android: 'https://play.google.com/store/apps/developer?id=Developer+Kegel',
+};
+
+export interface StoreApp {
+  name: string;
+  store: 'ios' | 'android';
+  url: string;
+  /** square icon, e.g. /apps/<name>.png */
+  icon?: string;
+  category?: L;
+}
+
+/** Apps published from the developer accounts above. */
+export const STORE_APPS: StoreApp[] = [];
