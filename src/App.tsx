@@ -322,15 +322,17 @@ export default function App() {
                           : <path d="M3.6 2.3 13.4 12l-9.8 9.7c-.4-.2-.6-.6-.6-1.1V3.4c0-.5.2-.9.6-1.1zm11 8.5 2.6-2.6 3.3 1.9c.9.5.9 1.8 0 2.3l-3.3 1.9-2.6-2.6L13.4 12zM5 1.6l10.4 6-2.1 2.1zm8.3 12.7 2.1 2.1L5 22.4z" />}
                       </svg>
                       <h3>{store === 'ios' ? 'App Store' : 'Google Play'}</h3>
+                      <span className="store-count"><CountUp to={apps.length} duration={1.6} /> {t.apps}</span>
                     </div>
                     {apps.length > 0 && (
                       <ul className="store-apps">
                         {apps.map(a => (
                           <li key={a.url}>
                             <a href={a.url} target="_blank" rel="noopener">
-                              {a.icon ? <img src={a.icon} alt="" width="56" height="56" loading="lazy" /> : <span className="app-ph">{a.name[0]}</span>}
+                              {a.icon
+                                ? <img src={a.icon} alt="" width="44" height="44" loading="lazy" />
+                                : <span className="app-ph" style={{ '--h': hue(a.name) } as React.CSSProperties}>{a.name[0].toUpperCase()}</span>}
                               <span><b>{a.name}</b>{a.category && <em>{a.category[lang]}</em>}</span>
-                              <i>{t.storeGet}</i>
                             </a>
                           </li>
                         ))}
@@ -428,6 +430,13 @@ export default function App() {
       </div>
     </ClickSpark>
   );
+}
+
+/** Stable hue per app name, so placeholder icons stay the same between visits. */
+function hue(name: string) {
+  let h = 0;
+  for (const c of name.toLowerCase()) h = (h * 31 + c.charCodeAt(0)) % 360;
+  return h;
 }
 
 function Card({ p, lang }: { p: Project; lang: Lang }) {
